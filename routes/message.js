@@ -1,13 +1,19 @@
 var express = require('express');
 var router = express.Router();
-const Message = require('../models/Message')
+const Message = require('../models/Message');
 
-
-//Ici la route n'est pas localhost/ mais localhost/messages/ -> définie sur app.js
-
-router.post('/', function(req, res) {
+router.post('/', (req, res) => {
+    console.log(req.body);
     const message = new Message(req.body);
     message.save().then(msg => res.json(msg));
 });
+
+router.get('/', (req, res) => {
+    Message.find()
+        .then(messages => res.json(messages))
+        .catch(err => console.log(err))
+    ;
+});
+
 
 module.exports = router;
