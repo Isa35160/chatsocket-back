@@ -14,6 +14,21 @@ var messageRouter = require('./routes/message');
 
 var app = express();
 
+
+//Socket.io
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
+io.on('connection', function(socket){
+  console.log('a user is connected');
+  socket.on('new message', message => io.emit('new message', message));
+});
+
+http.listen(4001, function(){
+  console.log('listening on *:4001');
+});
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
